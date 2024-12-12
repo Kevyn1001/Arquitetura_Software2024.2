@@ -8,8 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import camadaDados.UsuarioGateway;
-import camadaDominio.UsuarioMTE;
-import entidades.Usuario;
+import camadaDominio.GerenciarUsuarioRT;
+import entidades.UsuarioDTO;
 
 /**
  * Servlet implementation class IdentificarUsuario
@@ -18,35 +18,33 @@ import entidades.Usuario;
 public class IdentificarUsuario extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+    private GerenciarUsuarioRT gerenciarUsuarioRT;
+
     public IdentificarUsuario() {
         super();
+        this.gerenciarUsuarioRT = new GerenciarUsuarioRT(); // Instância de lógica de domínio
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Obtém os parâmetros de email e senha
-        String email = request.getParameter("email");
-        String senha = request.getParameter("senha");
+        // Configuração da resposta
+        response.setContentType("text/html");
 
-        // Validação básica dos parâmetros
-        if (email == null || email.isEmpty() || senha == null || senha.isEmpty()) {
-            request.setAttribute("errorMessage", "Email e senha são obrigatórios.");
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
-            return;
-        }
+        try {
+            // Obtém os parâmetros de email e senha
+            String email = request.getParameter("email");
+            String senha = request.getParameter("senha");
 
-        // Validação dos dados
-        boolean dadosValidos = UsuarioMTE.verificarDados(email, senha);
-        if (dadosValidos) {
-            // Busca o usuário no banco de dados
-            Usuario usuario = new UsuarioGateway().buscarUsuario(email, senha);
+            // Validação básica dos parâmetros
+            if (email == null || email.isEmpty() || senha == null || senha.isEmpty()) {
+                request.setAttribute("errorMessage", "Email e senha são obrigatórios.");
+                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                return;
+            }
+
+            // Validação e identificação do usuário
+            UsuarioDTO usuario = gerenciarUsuarioRT.identificarUsuario(email, senha);
 
             if (usuario != null) {
                 // Adiciona o usuário à sessão
@@ -55,10 +53,16 @@ public class IdentificarUsuario extends HttpServlet {
                 response.sendRedirect(request.getContextPath() + "/dashboard.jsp");
                 return;
             }
-        }
 
-        // Caso a autenticação falhe
-        request.setAttribute("errorMessage", "Credenciais inválidas. Tente novamente.");
-        request.getRequestDispatcher("/login.jsp").forward(request, response);
+            // Caso a autenticação falhe
+            request.setAttribute("errorMessage", "Credenciais inválidas. Tente novamente.");
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+
+        } catch (Exception e) {
+            // Lida com exceções e redireciona para a página de erro
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Erro interno. Por favor, tente novamente mais tarde.");
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
+        }
     }
 }
