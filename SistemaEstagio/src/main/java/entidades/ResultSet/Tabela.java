@@ -58,6 +58,16 @@ public class Tabela {
             linhas.remove(index);
         }
     }
+    
+    //Busca uma linha pelo valor de uma coluna
+    public Linha buscarLinhaPorValor(String nomeColuna, Object valor) {
+        for (Linha linha : linhas) {
+            if (linha.getValor(nomeColuna).equals(valor)) {
+                return linha;
+            }
+        }
+        return null;
+    }
 
     // Representação da tabela (útil para depuração)
     @Override

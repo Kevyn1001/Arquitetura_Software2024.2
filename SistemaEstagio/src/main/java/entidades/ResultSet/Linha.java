@@ -1,14 +1,29 @@
 package entidades.ResultSet;
 
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class Linha {
     private final Map<String, Object> dados;
+    private List<Coluna> colunas;
 
     // Construtor
     public Linha() {
         this.dados = new HashMap<>();
+    }
+    
+    // Método para obter a lista de colunas
+    public List<Coluna> getColunas() {
+        return colunas;
+    }
+    
+    //Método para adicionar uma coluna à linha
+    public void adicionarColuna(Coluna coluna) {
+        if (coluna != null) {
+            colunas.add(coluna);
+        }
     }
 
     // Adiciona um dado na linha
@@ -44,4 +59,14 @@ public class Linha {
                 "dados=" + dados +
                 '}';
     }
+
+    public Object getValor(String nomeColuna) {
+        for (Coluna coluna : colunas) {
+            if (coluna.getNome().equalsIgnoreCase(nomeColuna)) {
+                return coluna.getValor();
+            }
+        }
+        return null; // Retorna null se a coluna não for encontrada
+    }
+
 }

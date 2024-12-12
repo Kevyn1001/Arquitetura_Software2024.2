@@ -12,23 +12,22 @@ public class PedidoEstagioGateway {
         this.resultSet = resultSet;
     }
 
-    // Busca um pedido de estágio pelo número do pedido
-    public Tabela buscarPedido(int numeroPedido) {
+    //Busca um pedido de estágio pelo número do pedido
+    public Linha buscarPedido(int numeroPedido) {
         Tabela tabela = resultSet.getTabela("PedidoEstagio");
         if (tabela != null) {
-            return tabela.getLinha(numeroPedido);
+            return tabela.buscarLinhaPorValor("numeroPedido", numeroPedido);
         }
         return null;
     }
 
-    // Valida se um pedido de estágio existe e está ativo
+    //Valida se um pedido de estágio existe e está ativo
     public boolean validarPedido(int numeroPedido) {
-        Tabela tabela = buscarPedido(numeroPedido);
-        return tabela != null;
+        return buscarPedido(numeroPedido) != null;
     }
 
-    // Insere um novo pedido de estágio
-    public boolean inserirPedido(Tabela novoPedido) {
+    //Insere um novo pedido de estágio
+    public boolean inserirPedido(Linha novoPedido) {
         Tabela tabela = resultSet.getTabela("PedidoEstagio");
         if (tabela != null) {
             tabela.inserirLinha(novoPedido);
