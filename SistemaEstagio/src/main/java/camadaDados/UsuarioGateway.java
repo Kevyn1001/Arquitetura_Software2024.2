@@ -1,6 +1,6 @@
 package camadaDados;
 
-import entidades.Usuario;
+import entidades.UsuarioDTO;
 import entidades.ResultSet.ResultSet;
 
 public class UsuarioGateway {
