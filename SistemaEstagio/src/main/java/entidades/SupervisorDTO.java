@@ -1,20 +1,18 @@
 package entidades;
 
-import entidades.ResultSet.Tabela;
-
-public class Supervisor extends Tabela {
+public class SupervisorDTO {
     private String nome;
     private String funcao;
     private String nomeEmpresa;
     private String cnpj;
     private String email;
-    private String senha;
+    private String senha; // Idealmente, gerenciar senhas de forma segura
     private String telefone;
     private int numeroPedidoEstagio;
 
     // Construtor
-    public Supervisor(String nome, String funcao, String nomeEmpresa, String cnpj, 
-                      String email, String senha, String telefone, int numeroPedidoEstagio) {
+    public SupervisorDTO(String nome, String funcao, String nomeEmpresa, String cnpj,
+                         String email, String senha, String telefone, int numeroPedidoEstagio) {
         this.nome = nome;
         this.funcao = funcao;
         this.nomeEmpresa = nomeEmpresa;
@@ -90,21 +88,10 @@ public class Supervisor extends Tabela {
         this.numeroPedidoEstagio = numeroPedidoEstagio;
     }
 
-    // Override do método equals
-    @Override
-    public boolean equals(Object obj) {
-        try {
-            Supervisor other = (Supervisor) obj;
-            return this.email.equals(other.email) && this.numeroPedidoEstagio == other.numeroPedidoEstagio;
-        } catch (Exception ex) {
-            return false;
-        }
-    }
-
     // Override do método toString
     @Override
     public String toString() {
-        return "Supervisor [nome=" + nome + ", funcao=" + funcao + ", nomeEmpresa=" + nomeEmpresa 
+        return "SupervisorDTO [nome=" + nome + ", funcao=" + funcao + ", nomeEmpresa=" + nomeEmpresa 
                 + ", email=" + email + ", numeroPedidoEstagio=" + numeroPedidoEstagio + "]";
     }
 }
