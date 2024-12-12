@@ -1,0 +1,1 @@
+# Arquitetura_Software2024.2
